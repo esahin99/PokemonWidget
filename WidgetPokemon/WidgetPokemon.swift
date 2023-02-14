@@ -34,30 +34,31 @@ struct Provider: IntentTimelineProvider {
             completion(timeline)
         }
     }
+}
     
-    struct SimpleEntry: TimelineEntry {
-        let date: Date
-        let configuration: ConfigurationIntent
-        let pokemon: Pokemon
-    }
+struct SimpleEntry: TimelineEntry {
+    let date: Date
+    let configuration: ConfigurationIntent
+    let pokemon: Pokemon
+}
+
+struct WidgetPokemonEntryView : View {
+    var entry: Provider.Entry
     
-    struct WidgetPokemonEntryView : View {
-        var entry: Provider.Entry
-        
-        var body: some View {
-            ImageView(image: Image(entry.pokemon.imageName))
-        }
-    }
-    
-    struct WidgetPokemon: Widget {
-        let kind: String = "WidgetPokemon"
-        
-        var body: some WidgetConfiguration {
-            IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
-                WidgetPokemonEntryView(entry: entry)
-            }
-            .configurationDisplayName("My Widget")
-            .description("Widget Image")
-        }
+    var body: some View {
+        ImageView(image: Image(entry.pokemon.imageName))
     }
 }
+
+struct WidgetPokemon: Widget {
+    let kind: String = "WidgetPokemon"
+    
+    var body: some WidgetConfiguration {
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
+            WidgetPokemonEntryView(entry: entry)
+        }
+        .configurationDisplayName("My Widget")
+        .description("Widget Image")
+    }
+}
+
